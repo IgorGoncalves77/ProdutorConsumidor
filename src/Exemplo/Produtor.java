@@ -10,7 +10,7 @@ public class Produtor extends Thread {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < maxProducao; i++) {
+            for (int i = 1; i < maxProducao +1; i++) {
                 buffer.colocar(i); // Coloca um item no buffer
                 Thread.sleep(1000); // Simulando tempo de produção
             }

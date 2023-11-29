@@ -10,7 +10,7 @@ public class Consumidor extends Thread {
     @Override
     public void run() {
         try {
-            for (int i = 0; i < maxConsumo; i++) {
+            for (int i = 1; i < maxConsumo +1; i++) {
                 buffer.pegar(); // Retira um item do buffer
                 Thread.sleep(1000); // Simulando tempo de consumo
             }

@@ -2,6 +2,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 
 public class Servidor {
     public static void main(String[] args) throws Exception {
@@ -23,11 +24,11 @@ class ProdutorConsumidorHandler implements Runnable {
     }
 
     public void run() {
-        try (BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            String line = input.readLine();
-            int capacidade = Integer.parseInt(line);
+        try (BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             PrintWriter output = new PrintWriter(socket.getOutputStream(), true)) {
+            int capacidade = Integer.parseInt(input.readLine());
 
-            BufferCompartilhado buffer = new BufferCompartilhado(capacidade);
+            BufferCompartilhado buffer = new BufferCompartilhado(capacidade, output);
             Produtor produtor = new Produtor(buffer, capacidade);
             Consumidor consumidor = new Consumidor(buffer, capacidade);
 

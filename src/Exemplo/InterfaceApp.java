@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class InterfaceApp extends javax.swing.JFrame {
@@ -44,15 +46,24 @@ public class InterfaceApp extends javax.swing.JFrame {
     }
 
     private void conectarESolicitar(int capacidade) {
+        new Thread(() -> {
             try (Socket socket = new Socket("localhost", 5000);
-                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
                 out.println(capacidade);
-                textArea.append("Produtor-Consumidor iniciado com capacidade: " + capacidade + "\n");
+                SwingUtilities.invokeLater(() -> textArea.append("Produtor-Consumidor iniciado com capacidade: " + capacidade + "\n"));
+
+                String line;
+                while ((line = in.readLine()) != null) {
+                    final String linha = line;
+                    SwingUtilities.invokeLater(() -> textArea.append(linha + "\n"));
+                }
             } catch (Exception ex) {
-                textArea.append("Não foi possível conectar ao servidor: " + ex.getMessage() + "\n");
+                SwingUtilities.invokeLater(() -> textArea.append("Não foi possível conectar ao servidor: " + ex.getMessage() + "\n"));
                 ex.printStackTrace();
             }
-        }
+        }).start();
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

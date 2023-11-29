@@ -1,37 +1,31 @@
+import java.io.PrintWriter;
 import java.util.LinkedList;
 
 public class BufferCompartilhado {
     private LinkedList<Integer> buffer = new LinkedList<>();
     private int capacidade;
+    private PrintWriter output;
 
-    public BufferCompartilhado(int capacidade) {
+    public BufferCompartilhado(int capacidade, PrintWriter output) {
         this.capacidade = capacidade;
+        this.output = output;
     }
 
-    // Método para colocar um item no buffer. É sincronizado para garantir que 
-    // apenas uma thread (produtor ou consumidor) possa acessá-lo por vez.
     public synchronized void colocar(int valor) throws InterruptedException {
-        // Aguarda se o buffer estiver cheio
         while (buffer.size() == capacidade) {
             wait();
         }
         buffer.add(valor);
-        System.out.println("Produtor produziu: " + valor);
-
-        // Notifica outra thread que está esperando (possivelmente um consumidor)
+        output.println("Produtor produziu: " + valor);
         notify();
     }
 
-    // Método para retirar um item do buffer. Sincronizado por razões semelhantes.
     public synchronized int pegar() throws InterruptedException {
-        // Aguarda se o buffer estiver vazio
         while (buffer.isEmpty()) {
             wait();
         }
         int valor = buffer.removeFirst();
-        System.out.println("Consumidor consumiu: " + valor);
-
-        // Notifica outra thread que está esperando (possivelmente um produtor)
+        output.println("Consumidor consumiu: " + valor);
         notify();
         return valor;
     }
