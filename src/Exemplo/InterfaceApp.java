@@ -44,15 +44,15 @@ public class InterfaceApp extends javax.swing.JFrame {
     }
 
     private void conectarESolicitar(int capacidade) {
-        try (Socket socket = new Socket("localhost", 5000);
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
-            out.println(capacidade);
-            textArea.append("Produtor-Consumidor iniciado com capacidade: " + capacidade + "\n");
-        } catch (Exception ex) {
-            textArea.append("Não foi possível conectar ao servidor: " + ex.getMessage() + "\n");
-            ex.printStackTrace();
+            try (Socket socket = new Socket("localhost", 5000);
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
+                out.println(capacidade);
+                textArea.append("Produtor-Consumidor iniciado com capacidade: " + capacidade + "\n");
+            } catch (Exception ex) {
+                textArea.append("Não foi possível conectar ao servidor: " + ex.getMessage() + "\n");
+                ex.printStackTrace();
+            }
         }
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

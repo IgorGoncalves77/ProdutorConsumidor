@@ -1,14 +1,16 @@
 public class Produtor extends Thread {
     private BufferCompartilhado buffer;
-
-    public Produtor(BufferCompartilhado buffer) {
+    private int maxProducao;
+    
+    public Produtor(BufferCompartilhado buffer, int maxProducao) {
         this.buffer = buffer;
+        this.maxProducao = maxProducao;
     }
 
     @Override
     public void run() {
         try {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < maxProducao; i++) {
                 buffer.colocar(i); // Coloca um item no buffer
                 Thread.sleep(1000); // Simulando tempo de produção
             }

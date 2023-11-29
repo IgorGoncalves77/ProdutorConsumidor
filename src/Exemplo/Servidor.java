@@ -28,8 +28,8 @@ class ProdutorConsumidorHandler implements Runnable {
             int capacidade = Integer.parseInt(line);
 
             BufferCompartilhado buffer = new BufferCompartilhado(capacidade);
-            Produtor produtor = new Produtor(buffer);
-            Consumidor consumidor = new Consumidor(buffer);
+            Produtor produtor = new Produtor(buffer, capacidade);
+            Consumidor consumidor = new Consumidor(buffer, capacidade);
 
             produtor.start();
             consumidor.start();
