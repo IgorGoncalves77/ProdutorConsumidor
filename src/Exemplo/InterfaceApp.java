@@ -46,23 +46,28 @@ public class InterfaceApp extends javax.swing.JFrame {
     }
 
     private void conectarESolicitar(int capacidade) {
+        // Cria uma nova thread para lidar com a conexão de rede
         new Thread(() -> {
             try (Socket socket = new Socket("localhost", 5000);
                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                  BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                
+                // Envia a capacidade para o servidor
                 out.println(capacidade);
                 SwingUtilities.invokeLater(() -> textArea.append("Produtor-Consumidor iniciado com capacidade: " + capacidade + "\n"));
 
                 String line;
                 while ((line = in.readLine()) != null) {
                     final String linha = line;
+                    
+                    // Atualiza a área de texto com as mensagens recebidas do servidor
                     SwingUtilities.invokeLater(() -> textArea.append(linha + "\n"));
                 }
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> textArea.append("Não foi possível conectar ao servidor: " + ex.getMessage() + "\n"));
                 ex.printStackTrace();
             }
-        }).start();
+        }).start(); // Inicia a thread
     }
 
     @SuppressWarnings("unchecked")

@@ -12,7 +12,7 @@ public class Produtor extends Thread {
         try {
             for (int i = 1; i < maxProducao +1; i++) {
                 buffer.colocar(i); // Coloca um item no buffer
-                Thread.sleep(1000); // Simulando tempo de produção
+                Thread.sleep(500); // Simulando tempo de produção
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
